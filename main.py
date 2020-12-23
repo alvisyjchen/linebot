@@ -73,29 +73,29 @@ def message_text(event):
     elif text == "[開始使用]":
         def_add_profile.prfile_record(line_bot_api, conn, event, user_id, text, status)
 
-    elif status = "記錄個人資料":
+    elif status == "記錄個人資料":
         def_add_profile.add_gender(line_bot_api, conn, event, user_id, text, status)
     
-    elif status = "記錄性別":
+    elif status == "記錄性別":
         def_add_profile.add_high(line_bot_api, conn, event, user_id, text, status)
 
-    elif status = "記錄身高":
+    elif status == "記錄身高":
         def_add_profile.add_weight(line_bot_api, conn, event, user_id, text, status)
     
-    elif status = "記錄體重":
+    elif status == "記錄體重":
         def_add_profile.add_age(line_bot_api, conn, event, user_id, text, status)
 
-    elif status = "記錄年齡":
+    elif status == "記錄年齡":
         def_add_profile.add_activity(line_bot_api, conn, event, user_id, text, status)
 
-    elif status = "記錄活動量":
-        count_tdee.count_tdee(line_bot_api, conn, event, user_id, text, status, gender, high, weight, age, activity):
+    elif status == "記錄活動量":
+        count_tdee.count_tdee(line_bot_api, conn, event, user_id, text, status)
 
 if __name__ == "__main__":
     arg_parser = ArgumentParser(
         usage="Usage: python " + __file__ + " [--port <port>] [--help]"
     )
-    arg_parser.add_argument("-p", "--port", default=8000, help="port")
+    arg_parser.add_argument("-p", "--port", default=5000, help="port")
     arg_parser.add_argument("-d", "--debug", default=False, help="debug")
     options = arg_parser.parse_args()
 

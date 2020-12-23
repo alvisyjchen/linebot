@@ -36,10 +36,14 @@ def count_tdee(line_bot_api, conn, event, user_id, text, status):
     print("SQL找出使用者的基礎資料 成功")
     search_result = cursor.fetchone()
     print(search_result)
-    [gender_result, high_result, weight_result, age_result, activity_result] = search_result
+    gender_result = search_result[0]
+    high_result = float(search_result[1])
+    weight_result = float(search_result[2])
+    age_result = float(search_result[3])
+    activity_result = search_result[4]
 
-    if gender_result = "女":
-        if activity_result = "低":
+    if gender_result == "女":
+        if activity_result == "低":
             # 更新使用者搜尋狀態為計算tdee & 將tdee寫入資料庫
             tdee = ((9.6*weight_result) + (1.8*high_result) – (4.7*age_result) + 655)*1.2
             cursor = conn.cursor()
@@ -51,7 +55,7 @@ def count_tdee(line_bot_api, conn, event, user_id, text, status):
             cursor.execute(SQL_order)
             conn.commit()
             print("SQL更新userinfo狀態:計算tdee 成功")
-        elif activity_result = "中"：
+        elif activity_result == "中"：
             # 更新使用者搜尋狀態為計算tdee & 將tdee寫入資料庫
             tdee = ((9.6*weight_result) + (1.8*high_result) – (4.7*age_result) + 655)*1.55
             cursor = conn.cursor()
@@ -63,7 +67,7 @@ def count_tdee(line_bot_api, conn, event, user_id, text, status):
             cursor.execute(SQL_order)
             conn.commit()
             print("SQL更新userinfo狀態:計算tdee 成功")
-        else activity_result = "高"：
+        else：
             # 更新使用者搜尋狀態為計算tdee & 將tdee寫入資料庫
             tdee = ((9.6*weight_result) + (1.8*high_result) – (4.7*age_result) + 655)*1.9
             cursor = conn.cursor()
@@ -76,7 +80,7 @@ def count_tdee(line_bot_api, conn, event, user_id, text, status):
             conn.commit()
             print("SQL更新userinfo狀態:計算tdee 成功")
     elif：
-        if activity_result = "低":
+        if activity_result == "低":
             # 更新使用者搜尋狀態為計算tdee & 將tdee寫入資料庫
             tdee = ((13.7*weight_result) + (5*high_result) – (6.8*age_result) + 66)*1.2
             cursor = conn.cursor()
@@ -88,7 +92,7 @@ def count_tdee(line_bot_api, conn, event, user_id, text, status):
             cursor.execute(SQL_order)
             conn.commit()
             print("SQL更新userinfo狀態:計算tdee 成功")
-        elif activity_result = "中"：
+        elif activity_result == "中"：
             # 更新使用者搜尋狀態為計算tdee & 將tdee寫入資料庫
             tdee = ((13.7*weight_result) + (5*high_result) – (6.8*age_result) + 66)*1.55
             cursor = conn.cursor()
@@ -100,7 +104,7 @@ def count_tdee(line_bot_api, conn, event, user_id, text, status):
             cursor.execute(SQL_order)
             conn.commit()
             print("SQL更新userinfo狀態:計算tdee 成功")
-        else activity_result = "高"：
+        else：
             # 更新使用者搜尋狀態為計算tdee & 將tdee寫入資料庫
             tdee = ((13.7*weight_result) + (5*high_result) – (6.8*age_result) + 66)*1.9
             cursor = conn.cursor()

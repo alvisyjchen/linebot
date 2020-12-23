@@ -7,8 +7,6 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, FlexSendMessage
 import psycopg2
-import json
-import flex_search_confirm
 
 '''
 參數：
@@ -46,7 +44,7 @@ def prfile_record(line_bot_api, conn, event, user_id, text, status):
         # 回傳訊息
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage(text="請輸入性別（男/女）"))
-    elif:
+    else:
         # 更新使用者搜尋狀態為更新 user_id
         SQL_order = f'''
         update userinfo set userid = '{user_id}' where userid = '{user_id}';
