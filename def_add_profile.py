@@ -24,7 +24,7 @@ def prfile_record(line_bot_api, conn, event, user_id, text, status):
     cursor = conn.cursor()
     print(f"輸入字串：{text}")
     SQL_order = f'''
-    select user_id from userinfo where food_name = '{user_id}';
+    select userid from userinfo where userid = '{user_id}';
     '''
     cursor.execute(SQL_order)
     print("SQL搜尋 user_id 成功")
@@ -34,7 +34,7 @@ def prfile_record(line_bot_api, conn, event, user_id, text, status):
     if search_result is None:
         # 更新使用者搜尋狀態為新增 user_id
         SQL_order = f'''
-        insert into userinfo (user_id) values ('{user_id}');
+        insert into userinfo (userid) values ('{user_id}');
         update userinfo set status = '新增 user_id' where userid = '{user_id}';
         '''
         cursor.execute(SQL_order)
@@ -65,7 +65,7 @@ def add_gender(line_bot_api, conn, event, user_id, text, status):
     print(f"輸入字串：{gender}")
     SQL_order = f'''
     update userinfo set gender = '{gender}' where userid = '{user_id}';
-    update userinfo set status = '記錄性別' where userid = '{user_id}';
+    update userinfo set status = "記錄性別" where userid = '{user_id}';
     '''
     cursor.execute(SQL_order)
     conn.commit()
@@ -82,7 +82,7 @@ def add_high(line_bot_api, conn, event, user_id, text, status):
     print(f"輸入字串：{high}")
     SQL_order = f'''
     update userinfo set high = '{high}' where userid = '{user_id}';
-    update userinfo set status = '記錄身高' where userid = '{user_id}';
+    update userinfo set status = "記錄身高" where userid = '{user_id}';
     '''
     cursor.execute(SQL_order)
     conn.commit()

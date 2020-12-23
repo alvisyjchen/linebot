@@ -51,8 +51,8 @@ def message_text(event):
     user_id = event.source.user_id
 
     # 開啟資料庫連線
-    DATABASE_URL = os.environ['heroku config:get DATABASE_URL -a alvislinebot']
-    conn = psycopg2.connect(DATABASE_URL, sslmode="require")
+    DATABASE_URL = os.popen('heroku config:get DATABASE_URL -a linebotforkal').read()[:-1]
+    conn = psycopg2.connect(DATABASE_URL, sslmode = 'require')
 
     # 首先要在登錄 tdee 時就 insert userid 到 activities 表，就不用每次判斷 activities 表裡面有沒有這個 user
     print("user_id:", user_id)
@@ -61,7 +61,7 @@ def message_text(event):
     select status from userinfo where userid = '{user_id}'
     '''
     cursor.execute(SQL_order)
-    status = cursor.fetchone()[0]
+    status = cursor.fetchone()
     print(f"SQL搜尋成功，user的狀態: {status}")
     cursor.close()
 
@@ -69,7 +69,7 @@ def message_text(event):
     if text == "[開始使用]":
         def_add_profile.prfile_record(line_bot_api, conn, event, user_id, text, status)
 
-    elif status == "記錄個人資料":
+    elif status == "新增 user_id" or "更新 user_id":
         def_add_profile.add_gender(line_bot_api, conn, event, user_id, text, status)
     
     elif status == "記錄性別":
