@@ -66,11 +66,7 @@ def message_text(event):
     cursor.close()
 
     # 開始使用
-    if user_id is None:
-        line_bot_api.reply_message(
-        event.reply_token, TextSendMessage(text="請輸入[開始使用]"))
-
-    elif text == "[開始使用]":
+    if text == "[開始使用]":
         def_add_profile.prfile_record(line_bot_api, conn, event, user_id, text, status)
 
     elif status == "記錄個人資料":

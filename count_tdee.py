@@ -8,7 +8,7 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, FlexSendMessage
 import psycopg2
 import json
-import flex_search_confirm
+
 
 '''
 參數：
@@ -36,81 +36,72 @@ def count_tdee(line_bot_api, conn, event, user_id, text, status):
     print("SQL找出使用者的基礎資料 成功")
     search_result = cursor.fetchone()
     print(search_result)
-    gender_result = search_result[0]
-    high_result = float(search_result[1])
-    weight_result = float(search_result[2])
-    age_result = float(search_result[3])
-    activity_result = search_result[4]
+    [gender_result, high_result, weight_result, age_result, activity_result] = search_result
 
     if gender_result == "女":
         if activity_result == "低":
             # 更新使用者搜尋狀態為計算tdee & 將tdee寫入資料庫
-            tdee = ((9.6*weight_result) + (1.8*high_result) – (4.7*age_result) + 655)*1.2
             cursor = conn.cursor()
             print(f"紀錄tdee：{gender_result}{activity_result}")
             SQL_order = f'''
-            update userinfo set tdee = '{tdee}';
+            update userinfo set tdee = ((9.6*{weight_result}) + (1.8*{high_result}) – (4.7*{age_result}) + 655)*1.2 where userid = '{user_id}';
             update userinfo set status = '計算tdee' where userid = '{user_id}';
             '''
             cursor.execute(SQL_order)
             conn.commit()
             print("SQL更新userinfo狀態:計算tdee 成功")
-        elif activity_result == "中"：
+        elif activity_result == "中":
             # 更新使用者搜尋狀態為計算tdee & 將tdee寫入資料庫
-            tdee = ((9.6*weight_result) + (1.8*high_result) – (4.7*age_result) + 655)*1.55
             cursor = conn.cursor()
             print(f"紀錄tdee：{gender_result}{activity_result}")
             SQL_order = f'''
-            update userinfo set tdee = '{tdee}' where userid = '{user_id};
+            update userinfo set tdee = ((9.6*{weight_result}) + (1.8*{high_result}) – (4.7*{age_result}) + 655)*1.55 where userid = '{user_id};
             update userinfo set status = '計算tdee' where userid = '{user_id}';
             '''
             cursor.execute(SQL_order)
             conn.commit()
             print("SQL更新userinfo狀態:計算tdee 成功")
-        else：
+        else:
             # 更新使用者搜尋狀態為計算tdee & 將tdee寫入資料庫
-            tdee = ((9.6*weight_result) + (1.8*high_result) – (4.7*age_result) + 655)*1.9
             cursor = conn.cursor()
             print(f"紀錄tdee：{gender_result}{activity_result}")
             SQL_order = f'''
-            update userinfo set tdee = '{tdee}' where userid = '{user_id};
+            update userinfo set tdee = ((9.6*{weight_result}) + (1.8*{high_result}) – (4.7*{age_result}) + 655)*1.9 where userid = '{user_id};
             update userinfo set status = '計算tdee' where userid = '{user_id}';
             '''
             cursor.execute(SQL_order)
             conn.commit()
             print("SQL更新userinfo狀態:計算tdee 成功")
-    elif：
+    else:
         if activity_result == "低":
             # 更新使用者搜尋狀態為計算tdee & 將tdee寫入資料庫
-            tdee = ((13.7*weight_result) + (5*high_result) – (6.8*age_result) + 66)*1.2
             cursor = conn.cursor()
             print(f"紀錄tdee：{gender_result}{activity_result}")
             SQL_order = f'''
-            update userinfo set tdee = '{tdee}' where userid = '{user_id};
+            update userinfo set tdee = ((13.7*{weight_result}) + (5*{high_result}) – (6.8*{age_result}) + 66)*1.2 where userid = '{user_id};
             update userinfo set status = '計算tdee' where userid = '{user_id}';
             '''
             cursor.execute(SQL_order)
             conn.commit()
             print("SQL更新userinfo狀態:計算tdee 成功")
-        elif activity_result == "中"：
+        elif activity_result == "中":
             # 更新使用者搜尋狀態為計算tdee & 將tdee寫入資料庫
-            tdee = ((13.7*weight_result) + (5*high_result) – (6.8*age_result) + 66)*1.55
             cursor = conn.cursor()
             print(f"紀錄tdee：{gender_result}{activity_result}")
             SQL_order = f'''
-            update userinfo set tdee = '{tdee}' where userid = '{user_id};
+            update userinfo set tdee = ((13.7*{weight_result}) + (5*{high_result}) – (6.8*{age_result}) + 66)*1.55 where userid = '{user_id};
             update userinfo set status = '計算tdee' where userid = '{user_id}';
             '''
             cursor.execute(SQL_order)
             conn.commit()
             print("SQL更新userinfo狀態:計算tdee 成功")
-        else：
+        else:
             # 更新使用者搜尋狀態為計算tdee & 將tdee寫入資料庫
-            tdee = ((13.7*weight_result) + (5*high_result) – (6.8*age_result) + 66)*1.9
+
             cursor = conn.cursor()
             print(f"紀錄tdee：{gender_result}{activity_result}")
             SQL_order = f'''
-            update userinfo set tdee = '{tdee}' where userid = '{user_id};
+            update userinfo set tdee = ((13.7*{weight_result}) + (5*{high_result}) – (6.8*{age_result}) + 66)*1.9 where userid = '{user_id};
             update userinfo set status = '計算tdee' where userid = '{user_id}';
             '''
             cursor.execute(SQL_order)
