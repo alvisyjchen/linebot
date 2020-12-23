@@ -44,14 +44,9 @@ def message_text(event):
     # 定義常用變數
     text = event.message.text
     user_id = event.source.user_id
-    gender = ' '
-    high = 0
-    weight = 0
-    age = 0
-    activity = ' '
 
     # 開啟資料庫連線
-    DATABASE_URL = os.environ['heroku config:get DATABASE_URL -a linebotforkal']
+    DATABASE_URL = os.environ['heroku config:get DATABASE_URL -a alvislinebot']
     conn = psycopg2.connect(DATABASE_URL, sslmode="require")
 
     # 首先要在登錄 tdee 時就 insert userid 到 activities 表，就不用每次判斷 activities 表裡面有沒有這個 user
@@ -66,26 +61,30 @@ def message_text(event):
     cursor.close()
 
     # 開始使用
-    if text == "[開始使用]":
-        def_add_profile.name_record(line_bot_api, conn, event, user_id, text, status)
+    if user_id is None:
+        line_bot_api.reply_message(
+        event.reply_token, TextSendMessage(text="請輸入[開始使用]"))
+
+    elif text == "[開始使用]":
+        def_add_profile.prfile_record(line_bot_api, conn, event, user_id, text, status)
 
     elif status = "記錄個人資料":
-        gender = def_add_profile.add_gender(line_bot_api, conn, event, user_id, text, status)
+        def_add_profile.add_gender(line_bot_api, conn, event, user_id, text, status)
     
     elif status = "記錄性別":
-        high = def_add_profile.add_high(line_bot_api, conn, event, user_id, text, status)
+        def_add_profile.add_high(line_bot_api, conn, event, user_id, text, status)
 
     elif status = "記錄身高":
-        weight = def_add_profile.add_weight(line_bot_api, conn, event, user_id, text, status)
+        def_add_profile.add_weight(line_bot_api, conn, event, user_id, text, status)
     
     elif status = "記錄體重":
-        age = def_add_profile.add_age(line_bot_api, conn, event, user_id, text, status)
+        def_add_profile.add_age(line_bot_api, conn, event, user_id, text, status)
 
     elif status = "記錄年齡":
-        activity = def_add_profile.add_activity(line_bot_api, conn, event, user_id, text, status)
+        def_add_profile.add_activity(line_bot_api, conn, event, user_id, text, status)
 
     elif status = "記錄活動量":
-        tdee = count_tdee.count_tdee(line_bot_api, conn, event, user_id, text, status, gender, high, weight, age, activity):
+        count_tdee.count_tdee(line_bot_api, conn, event, user_id, text, status, gender, high, weight, age, activity):
 
 if __name__ == "__main__":
     arg_parser = ArgumentParser(

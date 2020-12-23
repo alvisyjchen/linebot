@@ -26,15 +26,39 @@ def prfile_record(line_bot_api, conn, event, user_id, text, status):
     cursor = conn.cursor()
     print(f"輸入字串：{text}")
     SQL_order = f'''
-    update userinfo set status = '記錄個人資料' where userid = '{user_id}';
+    select user_id from userinfo where food_name = '{user_id}';
     '''
     cursor.execute(SQL_order)
-    conn.commit()
-    print("SQL更新userinfo狀態:記錄個人資料 成功")
-    cursor.close()
-    # 回傳訊息
-    line_bot_api.reply_message(
-        event.reply_token, TextSendMessage(text="請輸入性別（男/女）"))
+    print("SQL搜尋 user_id 成功")
+    search_result = cursor.fetchone()
+    print(search_result)
+
+    if search_result is None:
+        # 更新使用者搜尋狀態為新增 user_id
+        SQL_order = f'''
+        insert into userinfo (user_id) values ('{user_id}');
+        update userinfo set status = '新增 user_id' where userid = '{user_id}';
+        '''
+        cursor.execute(SQL_order)
+        conn.commit()
+        print("SQL更新userinfo狀態:新增 user_id 成功")
+        cursor.close()
+        # 回傳訊息
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(text="請輸入性別（男/女）"))
+    elif:
+        # 更新使用者搜尋狀態為更新 user_id
+        SQL_order = f'''
+        update userinfo set userid = '{user_id}' where userid = '{user_id}';
+        update userinfo set status = '更新 user_id' where userid = '{user_id}';
+        '''
+        cursor.execute(SQL_order)
+        conn.commit()
+        print("SQL更新userinfo狀態:更新 user_id 成功")
+        cursor.close()
+        # 回傳訊息
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(text="請輸入性別（男/女）"))
 
 def add_gender(line_bot_api, conn, event, user_id, text, status):
     # 更新使用者搜尋狀態為記錄性別
@@ -42,6 +66,7 @@ def add_gender(line_bot_api, conn, event, user_id, text, status):
     gender = text
     print(f"輸入字串：{gender}")
     SQL_order = f'''
+    update userinfo set gender = '{gender}' where userid = '{user_id}';
     update userinfo set status = '記錄性別' where userid = '{user_id}';
     '''
     cursor.execute(SQL_order)
@@ -51,8 +76,6 @@ def add_gender(line_bot_api, conn, event, user_id, text, status):
     # 回傳訊息
     line_bot_api.reply_message(
         event.reply_token, TextSendMessage(text="請輸入身高（只需數字）"))
-    # 回傳性別
-    return gender
 
 def add_high(line_bot_api, conn, event, user_id, text, status):
     # 更新使用者搜尋狀態為記錄身高
@@ -60,6 +83,7 @@ def add_high(line_bot_api, conn, event, user_id, text, status):
     high = text
     print(f"輸入字串：{high}")
     SQL_order = f'''
+    update userinfo set high = '{high}' where userid = '{user_id}';
     update userinfo set status = '記錄身高' where userid = '{user_id}';
     '''
     cursor.execute(SQL_order)
@@ -69,9 +93,6 @@ def add_high(line_bot_api, conn, event, user_id, text, status):
     # 回傳訊息
     line_bot_api.reply_message(
         event.reply_token, TextSendMessage(text="請輸入體重（只需數字）"))
-    # 回傳身高
-    high = float(high)
-    return high
 
 def add_weight(line_bot_api, conn, event, user_id, text, status):
     # 更新使用者搜尋狀態為記錄體重
@@ -79,6 +100,7 @@ def add_weight(line_bot_api, conn, event, user_id, text, status):
     weight = text
     print(f"輸入字串：{weight}")
     SQL_order = f'''
+    update userinfo set weight = '{weight}' where userid = '{user_id}';
     update userinfo set status = '記錄體重' where userid = '{user_id}';
     '''
     cursor.execute(SQL_order)
@@ -88,9 +110,6 @@ def add_weight(line_bot_api, conn, event, user_id, text, status):
     # 回傳訊息
     line_bot_api.reply_message(
         event.reply_token, TextSendMessage(text="請輸入年齡（只需數字）"))
-    # 回傳體重
-    weight = float(weight)
-    return weight
 
 def add_age(line_bot_api, conn, event, user_id, text, status):
     # 更新使用者搜尋狀態為記錄年齡
@@ -98,6 +117,7 @@ def add_age(line_bot_api, conn, event, user_id, text, status):
     age = text
     print(f"輸入字串：{age}")
     SQL_order = f'''
+    update userinfo set age = '{age}' where userid = '{user_id}';
     update userinfo set status = '記錄年齡' where userid = '{user_id}';
     '''
     cursor.execute(SQL_order)
@@ -107,9 +127,6 @@ def add_age(line_bot_api, conn, event, user_id, text, status):
     # 回傳訊息
     line_bot_api.reply_message(
         event.reply_token, TextSendMessage(text="請輸入你的活動量（低/中/高）"))
-    # 回傳年齡
-    age = float(age)
-    return age
 
 def add_activity(line_bot_api, conn, event, user_id, text, status):
     # 更新使用者搜尋狀態為記錄活動量
@@ -117,15 +134,13 @@ def add_activity(line_bot_api, conn, event, user_id, text, status):
     activity = text
     print(f"輸入字串：{activity}")
     SQL_order = f'''
+    update userinfo set activity = '{activity}' where userid = '{user_id}';
     update userinfo set status = '記錄活動量' where userid = '{user_id}';
     '''
     cursor.execute(SQL_order)
     conn.commit()
     print("SQL更新userinfo狀態:記錄活動量 成功")
     cursor.close()
-    # 回傳活動量
-    return activity
     # 回傳訊息
     line_bot_api.reply_message(
         event.reply_token, TextSendMessage(text="是否開始計算 tdee?（請回覆：是）"))
-
